@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona una opción</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="button-container">
+        <button class="boton-redireccion" onclick="window.location.href = 'http://localhost/Tienda/Funciones/Marcas_vendidas.php'">Ventas recientes</button>
+        <button class="boton-redireccion" onclick="window.location.href = 'http://localhost/Tienda/Funciones/stock.php'">Stock</button>
+        <button class="boton-redireccion" onclick="window.location.href = 'http://localhost/Tienda/Funciones/Lo_mas_vendido.php'">Lo mas vendido</button>
+    </div>
+
+    <div class="message" id="mensaje"></div>
+
+    <script>
+        function mostrarMensaje(mensaje) {
+            document.getElementById('mensaje').innerText = mensaje;
+        }
+    </script>
+
+</body>
+</html>

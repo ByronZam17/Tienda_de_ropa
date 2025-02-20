@@ -54,7 +54,7 @@
 
     <script>
         function obtenerMarcasMasVendidas() {
-            fetch("http://localhost/Tienda/Consultas/Lo_mas_vendido.php")
+            fetch("http://localhost/Tienda/Controlador/Lo_mas_vendido.php")
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Error HTTP: ${response.status}`);

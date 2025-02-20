@@ -215,3 +215,20 @@ LIMIT 5;
 
 
 /*Vistas: */
+-- Vista para obtener marcas con al menos una prenda vendida
+CREATE VIEW v_marcas_con_ventas AS
+SELECT * FROM marcas WHERE ventas > 0;
+
+-- Vista para obtener las prendas más vendidas y su cantidad de stock restante
+CREATE VIEW v_prendas_mas_vendidas AS
+SELECT p.nombre_producto, SUM(e.cantidad) AS total_vendido, p.stock 
+FROM productos p 
+JOIN encargos e ON p.id_producto = e.id_producto 
+GROUP BY p.id_producto;
+
+-- Vista para obtener el top 5 de marcas más vendidas
+CREATE VIEW v_top5_marcas AS
+SELECT nombre_marca, ventas 
+FROM marcas 
+ORDER BY ventas DESC 
+LIMIT 5;

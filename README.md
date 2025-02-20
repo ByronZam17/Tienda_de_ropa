@@ -3,7 +3,7 @@
 # Proyecto plataformas.
 
 # diagrama
-![alt text](<Tienda/DBA/Diagrama de base de datos.PNG>)
+![alt text](./Tienda/Modelo/Diagrama%20de%20base%20de%20datos.PNG)
 
 
 # Marcas con al menos 1 prenda vendida 

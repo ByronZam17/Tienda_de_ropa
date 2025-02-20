@@ -212,3 +212,6 @@ SELECT nombre_marca, ventas
 FROM `marcas` 
 ORDER BY ventas DESC 
 LIMIT 5;
+
+
+/*Vistas: */

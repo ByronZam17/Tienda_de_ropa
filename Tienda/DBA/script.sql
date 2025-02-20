@@ -193,3 +193,22 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+/* Marcas con al menos 1 prenda vendida */
+
+SELECT * FROM `marcas` WHERE `ventas` > 0;
+
+
+/* Prendas mas vendidas y su cantidad de stock restante*/
+SELECT p.nombre_producto, SUM(e.cantidad) AS total_vendido, p.stock 
+FROM `productos` p
+JOIN `encargos` e ON p.id_producto = e.id_producto
+GROUP BY p.id_producto;
+
+
+/* Top 5 marcas mas vendidas */
+SELECT nombre_marca, ventas 
+FROM `marcas` 
+ORDER BY ventas DESC 
+LIMIT 5;

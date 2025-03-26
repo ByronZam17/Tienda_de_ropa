@@ -2,49 +2,132 @@
 
 # Proyecto plataformas.
 
-# diagrama
+# DBA
 ![alt text](./Tienda/Modelo/Diagrama%20de%20base%20de%20datos.PNG)
 
 
-# Marcas con al menos 1 prenda vendida 
-SELECT * FROM `marcas` WHERE `ventas` > 0;
+# API Tienda de Ropa - Documentación
+
+## Uso de Endpoints de la API
+
+### Endpoints para Marcas
+
+#### Obtener todas las marcas
+**Método:** GET  
+**Endpoint:** `http://localhost/Tienda_de_ropa/public/api/marcas`  
+**Descripción:** Obtiene todas las marcas registradas en el sistema.
+
+**Ejemplo de respuesta:**
+```json
+[
+  {
+    "id_marca": 1,
+    "nombre_marca": "Nike",
+    "cantidad_prendas": 200,
+    "ventas": 50
+  },
+  {
+    "id_marca": 2,
+    "nombre_marca": "Adidas",
+    "cantidad_prendas": 150,
+    "ventas": 0
+  }
+]
+
+##### obtener una marca por ID 
+Método: GET
+Endpoint: http://localhost/Tienda_de_ropa/public/api/marcas/{id}
+Ejemplo: http://localhost/Tienda_de_ropa/public/api/marcas/1
+
+Ejemplo de respuesta:
+
+{
+  "id_marca": 1,
+  "nombre_marca": "Nike",
+  "cantidad_prendas": 200,
+  "ventas": 50
+}
 
 
-id_marca	nombre_marca	cantidad_prendas	ventas	
-1	Nike	200	50	
-3	Puma	100	30	
-4	Reebok	120	20	
-5	Under Armour	80	15	
-6	New Balance	90	10	
+Endpoints para Productos
+Crear un nuevo producto
+Método: POST
+Endpoint: http://localhost/Tienda_de_ropa/public/api/productos
+Body (JSON):
+
+{
+  "nombre_producto": "Camiseta",
+  "descripcion": "Algodón 100%",
+  "precio": 25.99,
+  "stock": 100,
+  "id_marca": 1
+}
+Ejemplo de respuesta:
+{
+  "mensaje": "Producto creado exitosamente",
+  "id_producto": 3
+}
 
 
-# Prendas mas vendidas y su cantidad de stock restante
-SELECT p.nombre_producto, SUM(e.cantidad) AS total_vendido, p.stock 
-FROM `productos` p
-JOIN `encargos` e ON p.id_producto = e.id_producto
-GROUP BY p.id_producto;
+Endpoints para Reportes
+Obtener prendas vendidas con stock
+Método: GET
+Endpoint: http://localhost/Tienda_de_ropa/public/api/reportes/prendas-vendidas-stock
+
+Ejemplo de respuesta:
+
+json
+[
+  {
+    "nombre_producto": "Camiseta Roja Nike",
+    "total_vendido": 2,
+    "stock": 48
+  },
+  {
+    "nombre_producto": "Zapatillas Adidas",
+    "total_vendido": 1,
+    "stock": 29
+  }
+]
 
 
-nombre_producto	total_vendido	stock	
-Camiseta Roja Nike	2	50	
-Zapatillas Adidas	1	30	
-Pantalón Puma	1	40	
-
-
-# Top 5 marcas mas vendidas
-SELECT nombre_marca, ventas 
-FROM `marcas` 
-ORDER BY ventas DESC 
-LIMIT 5;
-
-
-nombre_marca	ventas   	
-Nike	50	
-Puma	30	
-Reebok	20	
-Under Armour	15	
-New Balance	10	
-
-
+Estructura de Respuestas Comunes
+Éxito (200 OK)
+json
+{
+  "mensaje": "Operación exitosa",
+  "datos": {}
+}
+Error (400 Bad Request)
+json
+{
+  "error": "Descripción del error",
+  "detalles": {}
+}
+No encontrado (404)
+json
+{
+  "error": "Recurso no encontrado"
+}
+Ejemplo Completo de Flujo
+Crear marca:
+POST /api/marcas
+{
+  "nombre_marca": "Puma",
+  "cantidad_prendas": 100,
+  "ventas": 0
+}
+Crear producto asociado:
+POST /api/productos
+{
+  "nombre_producto": "Short deportivo",
+  "descripcion": "Material transpirable",
+  "precio": 35.50,
+  "stock": 50,
+  "id_marca": 3
+}
+Consultar reporte:
+http
+GET /api/reportes/marcas-con-ventas
 
 

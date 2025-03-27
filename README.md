@@ -1,7 +1,7 @@
 # Proyecto plataformas.
 
 # DBA
-![alt text](./Tienda_DE_ROPA/Diagrama%20de%20base%20de%20datos.PNG)
+![alt text](image.png)
 
 
 # API Tienda de Ropa - Documentación
@@ -10,13 +10,15 @@
 
 ### Endpoints para Marcas
 
+
 #### Obtener todas las marcas
 **Método:** GET  
 **Endpoint:** `http://localhost/Tienda_de_ropa/public/api/marcas`  
 **Descripción:** Obtiene todas las marcas registradas en el sistema.
 
 **Ejemplo de respuesta:**
-```json
+
+Json
 [
   {
     "id_marca": 1,
@@ -31,7 +33,7 @@
     "ventas": 0
   }
 ]
-
+---------------------------------------------------------------------------------------
 ##### obtener una marca por ID 
 Método: GET
 Endpoint: http://localhost/Tienda_de_ropa/public/api/marcas/{id}
@@ -46,11 +48,45 @@ Ejemplo de respuesta:
   "ventas": 50
 }
 
+---------------------------------------------------------------------------------
+# Ejemplos de Endpoints DELETE - API Tienda de Ropa
 
-Endpoints para Productos
+## 1. Eliminar una Marca
+
+**Método:** DELETE  
+**Endpoint:** `http://localhost/Tienda_de_ropa/public/api/marcas/{id}`  
+**Descripción:** Elimina una marca específica por su ID.  
+**Validación:** No debe tener productos asociados.
+
+### Ejemplo de Request:
+
+DELETE http://localhost/Tienda_de_ropa/public/api/marcas/5
+Headers:
+ - Content-Type: application/json
+
+---------------------------------------------------------------------------------
+### Ejemplos de Endpoints PUSH - API Tienda de Ropa
+**Método:** Push  
+**Endpoint:** `http://localhost/Tienda_de_ropa/public/api/marcas/1`  
+
+
+______________________________________________________________________________________
+
+JSON
+{
+    "nombre_marca": "Nike Actualizado",
+    "cantidad_prendas": 250,
+    "ventas": 75
+}
+
+
+
+
+
+### Endpoints para Productos
 Crear un nuevo producto
-Método: POST
-Endpoint: http://localhost/Tienda_de_ropa/public/api/productos
+**Método**: POST
+**Endpoint**: http://localhost/Tienda_de_ropa/public/api/productos
 Body (JSON):
 
 {
@@ -66,11 +102,11 @@ Ejemplo de respuesta:
   "id_producto": 3
 }
 
-
-Endpoints para Reportes
+---------------------------------------------------------------------
+### Endpoints para Reportes
 Obtener prendas vendidas con stock
-Método: GET
-Endpoint: http://localhost/Tienda_de_ropa/public/api/reportes/prendas-vendidas-stock
+**Método**: GET
+**Endpoint**: http://localhost/Tienda_de_ropa/public/api/reportes/prendas-vendidas-stock
 
 Ejemplo de respuesta:
 
@@ -89,7 +125,7 @@ json
 ]
 
 
-Estructura de Respuestas Comunes
+### Estructura de Respuestas Comunes
 Éxito (200 OK)
 json
 {
@@ -107,26 +143,7 @@ json
 {
   "error": "Recurso no encontrado"
 }
-Ejemplo Completo de Flujo
-Crear marca:
-POST /api/marcas
-{
-  "nombre_marca": "Puma",
-  "cantidad_prendas": 100,
-  "ventas": 0
-}
-Crear producto asociado:
-POST /api/productos
-{
-  "nombre_producto": "Short deportivo",
-  "descripcion": "Material transpirable",
-  "precio": 35.50,
-  "stock": 50,
-  "id_marca": 3
-}
-Consultar reporte:
-http
-GET /api/reportes/marcas-con-ventas
+
 
 
 

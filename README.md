@@ -1,9 +1,7 @@
 # Proyecto plataformas.
 
-# Proyecto plataformas.
-
 # DBA
-![alt text](./Tienda/Modelo/Diagrama%20de%20base%20de%20datos.PNG)
+![alt text](./Tienda_DE_ROPA/Diagrama%20de%20base%20de%20datos.PNG)
 
 
 # API Tienda de Ropa - Documentación
@@ -129,5 +127,6 @@ POST /api/productos
 Consultar reporte:
 http
 GET /api/reportes/marcas-con-ventas
+
 
 

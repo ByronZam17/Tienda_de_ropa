@@ -1,77 +1,111 @@
 <?php
-// http://localhost/tienda_de_ropa/public/index.php/productos
-// http://localhost/tienda_de_ropa/public/index.php/marcas
+require_once __DIR__ . '/db/database.php';
+require_once __DIR__ . '/controllers/ClientesController.php';
+require_once __DIR__ . '/controllers/ProductosController.php';
+require_once __DIR__ . '/controllers/MarcasController.php';
+require_once __DIR__ . '/controllers/EncargosController.php';
+require_once __DIR__ . '/controllers/ReportesController.php';
 
-require_once 'controllers/RopaController.php';
-require_once "utils/Auth.php";
+class Router {
+    private $routes = [];
 
-// Seguridad con token (descomentar si es necesario)
-// $auth = new Auth();
-// $auth->verificarToken();
+    public function addRoute($method, $path, $handler) {
+        $this->routes[] = [
+            'method' => $method,
+            'path' => $path,
+            'handler' => $handler
+        ];
+    }
 
-// Obtener el método de la solicitud
-$method = $_SERVER['REQUEST_METHOD'];
-
-// Obtener la ruta solicitada y quitar 'public' si es necesario
-$requestUri = trim(str_replace('/tienda_de_ropa/public', '', $_SERVER['REQUEST_URI']), '/');
-
-// Separar la ruta en segmentos
-$requestUriWithoutQuery = strtok($requestUri, '?');
-$segments = explode('/', $requestUriWithoutQuery);
-
-// Obtener parámetros de la URL (si los hay)
-$queryString = $_SERVER['QUERY_STRING'] ?? '';
-parse_str($queryString, $queryParams);
-$id = $queryParams['id'] ?? null;
-
-if (isset($segments[0]) && $segments[0] == "productos") {
-    $ropaController = new RopaController();
-
-    switch ($method) {
-        case 'GET':
-            // Ejemplo: 
-            // http://localhost/tienda_de_ropa/public/index.php/productos?id=5
-            // http://localhost/tienda_de_ropa/public/index.php/productos
-            if ($id != null) {
-                $ropaController->obtenerProducto($id);
-            } else {
-                $ropaController->obtenerTodos();
+    public function dispatch($method, $uri) {
+        foreach ($this->routes as $route) {
+            if ($route['method'] === $method && $this->matchPath($route['path'], $uri)) {
+                $handler = $route['handler'];
+                $params = $this->extractParams($route['path'], $uri);
+                call_user_func($handler, $params);
+                return;
             }
-            break;
+        }
+        
+        http_response_code(404);
+        echo json_encode(['error' => 'Endpoint no encontrado']);
+    }
 
-        case 'POST':
-            $ropaController->crearProducto();
-            break;
+    private function matchPath($routePath, $requestUri) {
+        $routeParts = explode('/', trim($routePath, '/'));
+        $uriParts = explode('/', trim($requestUri, '/'));
+        
+        if (count($routeParts) !== count($uriParts)) {
+            return false;
+        }
+        
+        foreach ($routeParts as $index => $part) {
+            if (strpos($part, '{') === 0) {
+                continue;
+            }
+            if ($part !== $uriParts[$index]) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 
-        case 'PUT':
-            $ropaController->actualizarProducto($id);
-            break;
-
-        case 'DELETE':
-            $ropaController->eliminarProducto($id);
-            break;
-
-        default:
-            // Método no permitido
-            header('HTTP/1.1 405 Method Not Allowed');
-            echo json_encode(['error' => 'Método no permitido']);
-            break;
+    private function extractParams($routePath, $requestUri) {
+        $params = [];
+        $routeParts = explode('/', trim($routePath, '/'));
+        $uriParts = explode('/', trim($requestUri, '/'));
+        
+        foreach ($routeParts as $index => $part) {
+            if (strpos($part, '{') === 0) {
+                $paramName = trim($part, '{}');
+                $params[$paramName] = $uriParts[$index];
+            }
+        }
+        
+        return $params;
     }
 }
 
-// Manejo de la ruta "marcas"
-if (isset($segments[0]) && $segments[0] == "marcas") {
-    switch ($method) {
-        case 'GET':
-            echo json_encode(['Mensaje' => 'Listado de marcas']);
-            break;
-        case 'POST':
-            echo json_encode(['Mensaje' => 'Nueva marca creada']);
-            break;
-        default:
-            header('HTTP/1.1 405 Method Not Allowed');
-            echo json_encode(['error' => 'Método no permitido']);
-            break;
-    }
-}
-?>
+$router = new Router();
+$db = new Database();
+
+// Inicialización de controladores
+$clientesController = new ClientesController($db);
+$productosController = new ProductosController($db);
+$marcasController = new MarcasController($db);
+$encargosController = new EncargosController($db);
+$reportesController = new ReportesController($db);
+
+// Rutas para Clientes
+$router->addRoute('GET', '/api/clientes', [$clientesController, 'getAll']);
+$router->addRoute('GET', '/api/clientes/{id}', [$clientesController, 'getById']);
+$router->addRoute('POST', '/api/clientes', [$clientesController, 'create']);
+$router->addRoute('PUT', '/api/clientes/{id}', [$clientesController, 'update']);
+$router->addRoute('DELETE', '/api/clientes/{id}', [$clientesController, 'delete']);
+
+// Rutas para Productos
+$router->addRoute('GET', '/api/productos', [$productosController, 'getAll']);
+$router->addRoute('GET', '/api/productos/{id}', [$productosController, 'getById']);
+$router->addRoute('POST', '/api/productos', [$productosController, 'create']);
+$router->addRoute('PUT', '/api/productos/{id}', [$productosController, 'update']);
+$router->addRoute('DELETE', '/api/productos/{id}', [$productosController, 'delete']);
+
+// Rutas para Marcas (CORRECCIÓN: estaba 'marcas' en algunos lugares)
+$router->addRoute('GET', '/api/marcas', [$marcasController, 'getAll']);
+$router->addRoute('GET', '/api/marcas/{id}', [$marcasController, 'getById']);
+$router->addRoute('POST', '/api/marcas', [$marcasController, 'create']);
+$router->addRoute('PUT', '/api/marcas/{id}', [$marcasController, 'update']);
+$router->addRoute('DELETE', '/api/marcas/{id}', [$marcasController, 'delete']);
+
+// Rutas para Encargos
+$router->addRoute('GET', '/api/encargos', [$encargosController, 'getAll']);
+$router->addRoute('GET', '/api/encargos/{id}', [$encargosController, 'getById']);
+$router->addRoute('POST', '/api/encargos', [$encargosController, 'create']);
+$router->addRoute('PUT', '/api/encargos/{id}', [$encargosController, 'update']);
+$router->addRoute('DELETE', '/api/encargos/{id}', [$encargosController, 'delete']);
+
+// Rutas para Reportes
+$router->addRoute('GET', '/api/reportes/marcas-con-ventas', [$reportesController, 'marcasConVentas']);
+$router->addRoute('GET', '/api/reportes/prendas-vendidas-stock', [$reportesController, 'prendasVendidasStock']);
+$router->addRoute('GET', '/api/reportes/top-marcas-vendidas', [$reportesController, 'topMarcasVendidas']);

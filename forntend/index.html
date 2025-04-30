@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel - Tienda de Ropa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Sección Clientes -->
+    <section>
+      <h1>Clientes Frecuentes</h1>
+      <table id="tabla-clientes">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Datos se cargarán aquí -->
+        </tbody>
+        <tfoot>
+          <tr class="form-agregar">
+            <td colspan="6">
+              <form id="form-clientes">
+                <input type="hidden" id="clientes-id_cliente">
+                <input type="text" id="clientes-nombre" placeholder="Nombre" required>
+                <input type="email" id="clientes-correo" placeholder="Correo" required>
+                <input type="text" id="clientes-telefono" placeholder="Teléfono">
+                <input type="text" id="clientes-direccion" placeholder="Dirección">
+                <button type="submit">Guardar</button>
+                <button type="button" class="cancelar">Cancelar</button>
+              </form>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+
+    <!-- Sección Productos -->
+    <section>
+      <h1>Productos</h1>
+      <table id="tabla-productos">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Producto</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>ID Marca</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Datos se cargarán aquí -->
+        </tbody>
+        <tfoot>
+          <tr class="form-agregar">
+            <td colspan="7">
+              <form id="form-productos">
+                <input type="hidden" id="productos-id_producto">
+                <input type="text" id="productos-nombre_producto" placeholder="Producto" required>
+                <input type="text" id="productos-descripcion" placeholder="Descripción">
+                <input type="number" step="0.01" id="productos-precio" placeholder="Precio" required>
+                <input type="number" id="productos-stock" placeholder="Stock" required>
+                <input type="number" id="productos-id_marca" placeholder="ID Marca" required>
+                <button type="submit">Guardar</button>
+                <button type="button" class="cancelar">Cancelar</button>
+              </form>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+
+    <!-- Sección Marcas -->
+    <section>
+      <h1>Marcas</h1>
+      <table id="tabla-marcas">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Prendas</th>
+            <th>Ventas</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Datos se cargarán aquí -->
+        </tbody>
+        <tfoot>
+          <tr class="form-agregar">
+            <td colspan="5">
+              <form id="form-marcas">
+                <input type="hidden" id="marcas-id_marca">
+                <input type="text" id="marcas-nombre_marca" placeholder="Nombre" required>
+                <input type="number" id="marcas-cantidad_prendas" placeholder="Prendas">
+                <input type="number" id="marcas-ventas" placeholder="Ventas">
+                <button type="submit">Guardar</button>
+                <button type="button" class="cancelar">Cancelar</button>
+              </form>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+    <section>
+    <section>
+      <h1>Encargos</h1>
+      <table id="tabla-encargos">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>ID Cliente</th>
+            <th>ID Producto</th>
+            <th>Fecha</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Datos se cargarán aquí -->
+        </tbody>
+        <tfoot>
+          <tr class="form-agregar">
+            <td colspan="6">
+              <form id="form-encargos">
+                <input type="hidden" id="encargos-id_encargo">
+                <input type="number" id="encargos-id_cliente" placeholder="ID Cliente" required>
+                <input type="number" id="encargos-id_producto" placeholder="ID Producto" required>
+                <input type="date" id="encargos-fecha_encargo" placeholder="Fecha" required>
+                <input type="number" id="encargos-cantidad" placeholder="Cantidad" required>
+                <button type="submit">Guardar</button>
+                <button type="button" class="cancelar">Cancelar</button>
+              </form>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
